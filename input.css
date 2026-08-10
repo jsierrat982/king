@@ -2,4 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Puedes mover tus estilos personalizados (.score-input) aquí si lo deseas */
+@layer components {
+  /* Estilos centralizados para los inputs de puntuación */
+  .score-input {
+    @apply w-[60px] p-2 text-center border border-gray-300 rounded-lg bg-gray-50 text-gray-900 text-base outline-none transition-colors;
+  }
+  
+  /* Soporte para modo oscuro */
+  .dark .score-input {
+    @apply bg-gray-800 border-gray-600 text-gray-100;
+  }
+}
