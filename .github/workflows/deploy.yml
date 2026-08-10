@@ -34,8 +34,8 @@ jobs:
         run: npm install -D tailwindcss
         
       - name: Compilar CSS para producción
-        # Compilamos minificando el código para máximo rendimiento
-        run: npx tailwindcss -i ./input.css -o ./style.css --minify
+        # Añadimos --content "./*.html" para que Tailwind lea tu index.html
+        run: npx tailwindcss -i ./input.css -o ./style.css --content "./*.html" --minify
         
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
