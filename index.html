@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Anotador interactivo para el juego de cartas King. Mantiene puntuaciones, calcula subtotales y evita el bloqueo de pantalla.">
     <title>Juego "King"</title>
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#4f46e5">
     
-    <!-- CAMBIO: Usando tu imagen 'KING ICONO 2.png' (los espacios son %20) -->
-    <link rel="apple-touch-icon" href="KING%20ICONO%202.png">
-    <link rel="icon" href="KING%20ICONO%202.png">
+    <!-- Iconos PWA (Actualizado sin espacios) -->
+    <link rel="apple-touch-icon" href="./king-icono-2.png">
+    <link rel="icon" href="./king-icono-2.png">
 
-    <link rel="stylesheet" href="style.css">
-    <!-- Importar Google Fonts (Inter) -->
+    <!-- Enlace al archivo CSS generado por GitHub Actions -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
-        // Script anti-parpadeo (FOUC)
+        // Script anti-parpadeo (FOUC) para el modo oscuro
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
           document.documentElement.classList.add('dark');
           if (!('theme' in localStorage)) localStorage.theme = 'dark';
@@ -29,148 +32,46 @@
           if (!('theme' in localStorage)) localStorage.theme = 'light';
         }
     </script>
-    
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .score-input {
-            width: 60px;
-            padding: 8px;
-            text-align: center;
-            border: 1px solid #D1D5DB;
-            border-radius: 8px;
-            background-color: #F9FAFB;
-            color: #111827;
-            /* Evitar zoom en iOS al enfocar */
-            font-size: 16px; 
-        }
-        .dark .score-input {
-            background-color: #1F2937;
-            border-color: #374151;
-            color: #F9FAFB;
-        }
-    </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 min-h-screen p-4 sm:p-8 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen p-4 sm:p-8 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
 
-    <div class="max-w-4xl mx-auto">
-        
+    <main class="max-w-4xl mx-auto">
         <!-- Controles de Jugadores -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
             <div>
                 <label for="p1-name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Jugador 1</label>
-                <input type="text" id="p1-name" data-player-id="1" class="player-name-input w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Nombre">
+                <input type="text" id="p1-name" data-player-id="1" class="player-name-input w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" placeholder="Nombre">
             </div>
             <div>
                 <label for="p2-name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Jugador 2</label>
-                <input type="text" id="p2-name" data-player-id="2" class="player-name-input w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Nombre">
+                <input type="text" id="p2-name" data-player-id="2" class="player-name-input w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" placeholder="Nombre">
             </div>
             <div>
                 <label for="p3-name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Jugador 3</label>
-                <input type="text" id="p3-name" data-player-id="3" class="player-name-input w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Nombre">
+                <input type="text" id="p3-name" data-player-id="3" class="player-name-input w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" placeholder="Nombre">
             </div>
             <div>
                 <label for="p4-name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Jugador 4</label>
-                <input type="text" id="p4-name" data-player-id="4" class="player-name-input w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Nombre">
+                <input type="text" id="p4-name" data-player-id="4" class="player-name-input w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" placeholder="Nombre">
             </div>
-        </div>
+        </section>
 
         <!-- Tabla de Puntuación -->
-        <div class="shadow-lg rounded-xl border border-gray-200 dark:border-gray-700 overflow-x-auto">
-            <table class="w-full min-w-[600px]"> 
+        <section class="shadow-lg rounded-xl border border-gray-200 dark:border-gray-700 overflow-x-auto">
+            <table class="w-full min-w-[600px] border-collapse"> 
                 <thead class="bg-gray-100 dark:bg-gray-700">
                     <tr>
-                        <th class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-300 rounded-tl-lg">Ronda</th>
-                        <th id="th-p1" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300">J1</th>
-                        <th id="th-p2" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300">J2</th>
-                        <th id="th-p3" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300">J3</th>
-                        <th id="th-p4" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300 rounded-tr-lg">J4</th>
+                        <th scope="col" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-300 rounded-tl-lg">Ronda</th>
+                        <th scope="col" id="th-p1" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300">J1</th>
+                        <th scope="col" id="th-p2" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300">J2</th>
+                        <th scope="col" id="th-p3" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300">J3</th>
+                        <th scope="col" id="th-p4" class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300 rounded-tr-lg">J4</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800" id="score-body">
-                    
-                    <!-- R1 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">1. NO Bases (-20)</td>
-                        <td class="p-2 text-center"><select id="p1-r1" data-round="1" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r1" data-round="1" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r1" data-round="1" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r1" data-round="1" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                    </tr>
-                    <!-- R2 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">2. NO ❤️ (-20)</td>
-                        <td class="p-2 text-center"><select id="p1-r2" data-round="2" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r2" data-round="2" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r2" data-round="2" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r2" data-round="2" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                    </tr>
-                    <!-- R3 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">3. NO Js Ks (-30)</td>
-                         <td class="p-2 text-center"><select id="p1-r3" data-round="3" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></td>
-                         <td class="p-2 text-center"><select id="p2-r3" data-round="3" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></td>
-                         <td class="p-2 text-center"><select id="p3-r3" data-round="3" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></td>
-                         <td class="p-2 text-center"><select id="p4-r3" data-round="3" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></td>
-                    </tr>
-                    <!-- R4 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">4. NO Qs (-50)</td>
-                        <td class="p-2 text-center"><select id="p1-r4" data-round="4" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r4" data-round="4" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r4" data-round="4" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r4" data-round="4" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td>
-                    </tr>
-                    <!-- R5 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">5. NO K❤️ (-160)</td>
-                        <td class="p-2 text-center"><select id="p1-r5" data-round="5" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r5" data-round="5" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r5" data-round="5" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r5" data-round="5" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option></select></td>
-                    </tr>
-                    <!-- R6 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">6. NO 2 Ultimas (-90)</td>
-                        <td class="p-2 text-center"><select id="p1-r6" data-round="6" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r6" data-round="6" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r6" data-round="6" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r6" data-round="6" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></td>
-                    </tr>
-
-                     <!-- Subtotal Negativo -->
-                     <tr class="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
-                        <td class="p-2 font-semibold text-indigo-500 dark:text-indigo-300 text-sm">Sub Negativo</td>
-                        <td id="p1-sub-neg" class="p-2 text-center font-bold">0</td>
-                        <td id="p2-sub-neg" class="p-2 text-center font-bold">0</td>
-                        <td id="p3-sub-neg" class="p-2 text-center font-bold">0</td>
-                        <td id="p4-sub-neg" class="p-2 text-center font-bold">0</td>
-                    </tr>
-
-                    <!-- R7 a R10 (Positivas) -->
-                    <!-- R7 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">7. Positivas (+25)</td>
-                        <td class="p-2 text-center"><select id="p1-r7" data-round="7" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r7" data-round="7" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r7" data-round="7" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r7" data-round="7" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                    </tr>
-                    <!-- R8 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">8. Positivas (+25)</td>
-                        <td class="p-2 text-center"><select id="p1-r8" data-round="8" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r8" data-round="8" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r8" data-round="8" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r8" data-round="8" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                    </tr>
-                    <!-- R9 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">9. Positivas (+25)</td>
-                        <td class="p-2 text-center"><select id="p1-r9" data-round="9" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r9" data-round="9" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r9" data-round="9" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r9" data-round="9" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                    </tr>
-                    <!-- R10 -->
-                    <tr class="border-b border-gray-200 dark:border-gray-700"><td class="p-2 text-sm font-medium">10. Positivas (+25)</td>
-                        <td class="p-2 text-center"><select id="p1-r10" data-round="10" data-player="1" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p2-r10" data-round="10" data-player="2" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p3-r10" data-round="10" data-player="3" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                        <td class="p-2 text-center"><select id="p4-r10" data-round="10" data-player="4" class="score-input"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></td>
-                    </tr>
-
-
+                    <!-- Rondas Generadas Dinámicamente por JavaScript -->
+                </tbody>
+                <tfoot>
                     <!-- Subtotal Positivo -->
                     <tr class="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
                         <td class="p-2 font-semibold text-emerald-600 dark:text-emerald-300 text-sm">Sub Positivo</td>
@@ -179,82 +80,130 @@
                         <td id="p3-sub-pos" class="p-2 text-center font-bold">0</td>
                         <td id="p4-sub-pos" class="p-2 text-center font-bold">0</td>
                     </tr>
-
                     <!-- TOTAL FINAL -->
                     <tr class="bg-indigo-100 dark:bg-indigo-900/50">
                         <td class="p-4 font-bold text-lg text-indigo-700 dark:text-indigo-200">TOTAL</td>
-                        <td id="p1-total" class="p-4 text-center font-black text-2xl text-indigo-800 dark:text-white">0</td>
-                        <td id="p2-total" class="p-4 text-center font-black text-2xl text-indigo-800 dark:text-white">0</td>
-                        <td id="p3-total" class="p-4 text-center font-black text-2xl text-indigo-800 dark:text-white">0</td>
-                        <td id="p4-total" class="p-4 text-center font-black text-2xl text-indigo-800 dark:text-white">0</td>
+                        <td id="p1-total" class="p-4 text-center font-black text-2xl text-indigo-800 dark:text-white transition-colors">0</td>
+                        <td id="p2-total" class="p-4 text-center font-black text-2xl text-indigo-800 dark:text-white transition-colors">0</td>
+                        <td id="p3-total" class="p-4 text-center font-black text-2xl text-indigo-800 dark:text-white transition-colors">0</td>
+                        <td id="p4-total" class="p-4 text-center font-black text-2xl text-indigo-800 dark:text-white transition-colors">0</td>
                     </tr>
-
                     <!-- Valor en $ -->
                     <tr class="bg-gray-100 dark:bg-gray-700">
                         <td class="p-2 font-medium text-gray-700 dark:text-gray-300 rounded-bl-lg text-sm">
                             <label for="dollar-value-input" class="block mb-1">Valor ($):</label>
-                            <input type="number" id="dollar-value-input" class="w-16 p-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm" placeholder="0" step="0.01">
+                            <input type="number" id="dollar-value-input" class="w-20 p-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="0" step="1">
                         </td>
                         <td id="p1-dollar-total" class="p-2 text-center font-bold text-blue-600 dark:text-blue-300">$0</td>
                         <td id="p2-dollar-total" class="p-2 text-center font-bold text-blue-600 dark:text-blue-300">$0</td>
                         <td id="p3-dollar-total" class="p-2 text-center font-bold text-blue-600 dark:text-blue-300">$0</td>
                         <td id="p4-dollar-total" class="p-2 text-center font-bold text-blue-600 dark:text-blue-300 rounded-br-lg">$0</td>
                     </tr>
-
-                </tbody>
+                </tfoot>
             </table>
-        </div>
+        </section>
 
-        <!-- Botones de Control (GRID para que se vean bien en móvil) -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
-            <!-- 1. Reiniciar Puntos (Naranja) -->
+        <!-- Botones de Control -->
+        <section class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
             <button id="reset-scores-btn" class="px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg shadow transition-colors flex items-center justify-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
                 Reiniciar Puntos
             </button>
-
-            <!-- 2. Borrar Todo (Rojo Oscuro) -->
             <button id="reset-all-btn" class="px-4 py-3 bg-red-700 hover:bg-red-800 text-white font-medium rounded-lg shadow transition-colors flex items-center justify-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
                 Borrar Todo
             </button>
-
-            <!-- 3. Wake Lock (Gris/Amarillo) -->
             <button id="wake-lock-btn" class="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg shadow transition-colors flex items-center justify-center gap-2">
                 <span>💡</span> <span id="wake-status">Desbloquear Pantalla</span>
             </button>
-        </div>
-
-    </div>
+        </section>
+    </main>
 
     <footer class="mt-12 text-center text-xs text-gray-500 dark:text-gray-400 pb-6">
-        <p>&copy; 2025 Julian Sierra T.</p>
+        <p>&copy; 2026 Julián Sierra T.</p>
     </footer>
 
     <script>
         // Registro del Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado:', reg.scope))
-                    .catch(err => console.log('Error SW:', err));
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('Error SW:', err));
             });
         }
 
+        // Definición de las rondas para generación dinámica
+        const roundsData = [
+            { id: 1, name: "1. NO Bases", value: -20, max: 13 },
+            { id: 2, name: "2. NO ❤️", value: -20, max: 13 },
+            { id: 3, name: "3. NO Js Ks", value: -30, max: 8 },
+            { id: 4, name: "4. NO Qs", value: -50, max: 4 },
+            { id: 5, name: "5. NO K❤️", value: -160, max: 1 },
+            { id: 6, name: "6. NO 2 Ultimas", value: -90, max: 2 },
+            { type: 'sub-neg' }, // Fila separadora
+            { id: 7, name: "7. Positivas", value: 25, max: 13 },
+            { id: 8, name: "8. Positivas", value: 25, max: 13 },
+            { id: 9, name: "9. Positivas", value: 25, max: 13 },
+            { id: 10, name: "10. Positivas", value: 25, max: 13 }
+        ];
+
+        // Función para inyectar las filas en el HTML dinámicamente
+        function renderTableRows() {
+            const tbody = document.getElementById('score-body');
+            let html = '';
+
+            roundsData.forEach(round => {
+                if (round.type === 'sub-neg') {
+                    html += `
+                        <tr class="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+                            <td class="p-2 font-semibold text-indigo-500 dark:text-indigo-300 text-sm">Sub Negativo</td>
+                            <td id="p1-sub-neg" class="p-2 text-center font-bold">0</td>
+                            <td id="p2-sub-neg" class="p-2 text-center font-bold">0</td>
+                            <td id="p3-sub-neg" class="p-2 text-center font-bold">0</td>
+                            <td id="p4-sub-neg" class="p-2 text-center font-bold">0</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                // Generar opciones del select basado en el max
+                let options = '';
+                for(let i = 0; i <= round.max; i++) {
+                    options += `<option value="${i}">${i}</option>`;
+                }
+
+                const sign = round.value > 0 ? '+' : '';
+                html += `
+                    <tr class="border-b border-gray-200 dark:border-gray-700 transition-colors" id="row-r${round.id}">
+                        <td class="p-2 text-sm font-medium" scope="row">${round.name} (${sign}${round.value})</td>
+                        ${[1, 2, 3, 4].map(player => `
+                            <td class="p-2 text-center">
+                                <select id="p${player}-r${round.id}" data-round="${round.id}" data-player="${player}" class="score-input" aria-label="Puntuación Jugador ${player} Ronda ${round.id}">
+                                    ${options}
+                                </select>
+                            </td>
+                        `).join('')}
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            // Renderizamos la tabla antes de inicializar los listeners
+            renderTableRows();
+
             const scoreInputs = document.querySelectorAll('.score-input');
             const playerNameInputs = document.querySelectorAll('.player-name-input');
             const resetScoresBtn = document.getElementById('reset-scores-btn');
             const resetAllBtn = document.getElementById('reset-all-btn');
             const dollarInput = document.getElementById('dollar-value-input');
-
-            // Referencias para Wake Lock
             const wakeLockBtn = document.getElementById('wake-lock-btn');
             const wakeStatus = document.getElementById('wake-status');
+            
             let wakeLock = null;
 
             // --- Lógica Wake Lock ---
@@ -265,7 +214,7 @@
                             wakeLock = await navigator.wakeLock.request('screen');
                             wakeStatus.textContent = "Pantalla: Activa";
                             wakeLockBtn.classList.remove('bg-gray-200', 'dark:bg-gray-700');
-                            wakeLockBtn.classList.add('bg-yellow-400', 'text-black'); // Color activo
+                            wakeLockBtn.classList.add('bg-yellow-400', 'text-black');
                             
                             wakeLock.addEventListener('release', () => {
                                 wakeLock = null;
@@ -276,8 +225,6 @@
                         }
                     } else {
                         wakeLock.release();
-                        wakeLock = null;
-                        updateWakeUI(false);
                     }
                 } else {
                     alert('Tu navegador no soporta esta función.');
@@ -286,44 +233,57 @@
 
             function updateWakeUI(isActive) {
                 if (!isActive) {
-                    wakeStatus.textContent = "Pantalla: Normal";
+                    wakeStatus.textContent = "Desbloquear Pantalla";
                     wakeLockBtn.classList.add('bg-gray-200', 'dark:bg-gray-700');
                     wakeLockBtn.classList.remove('bg-yellow-400', 'text-black');
                 }
             }
+            if(wakeLockBtn) wakeLockBtn.addEventListener('click', toggleWakeLock);
 
-            if(wakeLockBtn) {
-                wakeLockBtn.addEventListener('click', toggleWakeLock);
+            // --- Persistencia con LocalStorage ---
+            function saveData() {
+                const state = { players: {}, scores: {}, dollarValue: dollarInput ? dollarInput.value : 0 };
+                playerNameInputs.forEach(input => state.players[input.id] = input.value);
+                scoreInputs.forEach(input => state.scores[input.id] = input.value);
+                localStorage.setItem('kingGameState', JSON.stringify(state));
+            }
+
+            function loadData() {
+                const saved = localStorage.getItem('kingGameState');
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    if (dollarInput && state.dollarValue) dollarInput.value = state.dollarValue;
+                    playerNameInputs.forEach(input => { if (state.players[input.id]) input.value = state.players[input.id]; });
+                    scoreInputs.forEach(input => { if (state.scores[input.id]) input.value = state.scores[input.id]; });
+                }
             }
 
             // --- Lógica del Juego ---
-            const multipliers = { 1: -20, 2: -20, 3: -30, 4: -50, 5: -160, 6: -90, 7: 25, 8: 25, 9: 25, 10: 25 };
-            const roundMaxValues = { 1: 13, 2: 13, 3: 8, 4: 4, 5: 1, 6: 2, 7: 13, 8: 13, 9: 13, 10: 13 };
-
             function calculateScores() {
                 let playerTotals = { 1: 0, 2: 0, 3: 0, 4: 0 };
                 let playerSubNeg = { 1: 0, 2: 0, 3: 0, 4: 0 };
                 let playerSubPos = { 1: 0, 2: 0, 3: 0, 4: 0 };
 
-                for (let round = 1; round <= 10; round++) {
+                const roundConfigs = roundsData.filter(r => r.id);
+
+                roundConfigs.forEach(round => {
                     let roundSum = 0;
                     for (let player = 1; player <= 4; player++) {
-                        const input = document.getElementById(`p${player}-r${round}`);
+                        const input = document.getElementById(`p${player}-r${round.id}`);
                         const value = parseInt(input.value, 10) || 0;
                         roundSum += value;
-                        const score = value * multipliers[round];
+                        const score = value * round.value;
                         playerTotals[player] += score;
-                        if (round <= 6) playerSubNeg[player] += score;
+                        if (round.id <= 6) playerSubNeg[player] += score;
                         else playerSubPos[player] += score;
                     }
 
-                    const roundRow = document.getElementById(`p1-r${round}`).closest('tr');
-                    const expectedMax = roundMaxValues[round];
+                    const roundRow = document.getElementById(`row-r${round.id}`);
                     roundRow.classList.remove('bg-red-200', 'dark:bg-red-800/50');
-                    if (roundSum > 0 && roundSum !== expectedMax) {
+                    if (roundSum > 0 && roundSum !== round.max) {
                         roundRow.classList.add('bg-red-200', 'dark:bg-red-800/50');
                     }
-                }
+                });
 
                 for (let player = 1; player <= 4; player++) {
                     document.getElementById(`p${player}-total`).textContent = playerTotals[player];
@@ -338,6 +298,7 @@
                 }
                 
                 highlightWinner(playerTotals);
+                saveData(); // Guardar estado tras calcular
             }
 
             function updatePlayerHeaders() {
@@ -349,15 +310,13 @@
                         th.textContent = name ? name.substring(0, 3).toUpperCase() : `J${playerId}`;
                     }
                 });
+                saveData(); // Guardar estado tras cambiar un nombre
             }
 
             function highlightWinner(totals) {
-                for (let player = 1; player <= 4; player++) {
-                    document.getElementById(`th-p${player}`).classList.remove('bg-green-200', 'dark:bg-green-800', 'bg-red-200', 'dark:bg-red-800');
-                }
                 const defaultColors = ['text-indigo-800', 'dark:text-white'];
-                const positiveColors = ['text-green-500', 'dark:text-green-400'];
-                const negativeColors = ['text-red-500', 'dark:text-red-400'];
+                const positiveColors = ['text-green-600', 'dark:text-green-400'];
+                const negativeColors = ['text-red-600', 'dark:text-red-400'];
                 const allColorClasses = [...defaultColors, ...positiveColors, ...negativeColors];
 
                 for (let player = 1; player <= 4; player++) {
@@ -370,23 +329,20 @@
                 }
             }
 
-            // --- Función: Reiniciar Solo Puntos ---
+            // --- Acciones de Reinicio ---
             function resetScoresOnly() {
                 if (!confirm('¿Mantener nombres y borrar SOLO los puntos?')) return;
-                
                 scoreInputs.forEach(input => input.value = '0');
-                // NO borramos nombres ni valor del dólar
                 calculateScores();
             }
 
-            // --- Función: Reiniciar Todo (Hard Reset) ---
             function resetAll() {
                 if (!confirm('¿BORRAR TODO? Se perderán nombres y configuraciones.')) return;
-
                 scoreInputs.forEach(input => input.value = '0');
                 playerNameInputs.forEach(input => input.value = '');
                 if(dollarInput) dollarInput.value = '';
                 
+                localStorage.removeItem('kingGameState'); // Limpiar caché
                 calculateScores();
                 updatePlayerHeaders();
             }
@@ -394,18 +350,15 @@
             // Listeners
             scoreInputs.forEach(input => input.addEventListener('change', calculateScores));
             playerNameInputs.forEach(input => input.addEventListener('input', updatePlayerHeaders));
-            
-            // Nuevos Listeners para los botones separados
             resetScoresBtn.addEventListener('click', resetScoresOnly);
             resetAllBtn.addEventListener('click', resetAll);
-            
             if (dollarInput) dollarInput.addEventListener('input', calculateScores);
 
-            // Init
+            // Inicialización final
+            loadData();
             calculateScores();
             updatePlayerHeaders();
         });
     </script>
 </body>
 </html>
-
