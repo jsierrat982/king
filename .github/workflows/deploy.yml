@@ -28,8 +28,7 @@ jobs:
           
       - name: Compilar CSS para producción
         # Usamos npx --yes para descargar y ejecutar Tailwind directamente sin requerir un package.json
-        run: npx --yes tailwindcss -i ./input.css -o ./style.css --content "./*.html" --minify
-        
+        run: npx --yes tailwindcss@3 -i ./input.css -o ./style.css --content "./*.html" --minify
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
         
