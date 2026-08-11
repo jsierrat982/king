@@ -24,14 +24,11 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24' # <-- Actualizado a la versión 24 para evitar la advertencia
           
-      - name: Instalar Tailwind CSS
-        run: npm install -D tailwindcss
-        
       - name: Compilar CSS para producción
-        # Lee el input.css, escanea el index.html y genera el style.css minificado
-        run: npx tailwindcss -i ./input.css -o ./style.css --content "./*.html" --minify
+        # Usamos npx --yes para descargar y ejecutar Tailwind directamente sin requerir un package.json
+        run: npx --yes tailwindcss -i ./input.css -o ./style.css --content "./*.html" --minify
         
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
